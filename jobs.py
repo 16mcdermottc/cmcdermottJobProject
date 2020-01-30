@@ -20,5 +20,6 @@ def get_api():
 
     for each in job_responses:
         file.write(each)
+        print(each)
 
     return job_responses
