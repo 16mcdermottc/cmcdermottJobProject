@@ -1,4 +1,3 @@
-import pytest
 import jobs
 import os.path
 
