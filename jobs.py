@@ -26,3 +26,6 @@ def get_api():
         file.write(each)
 
     return job_responses
+
+
+get_api()
