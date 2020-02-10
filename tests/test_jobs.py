@@ -1,6 +1,8 @@
 import sqlite3
 import jobs
 
+DATABASE = "Git_Jobs.sqlite"
+
 
 def test_api_length():
     job_list = jobs.get_api()
@@ -8,14 +10,14 @@ def test_api_length():
 
 
 def test_job_listing():
-    conn, cursor = jobs.open_db("Git_Jobs.sqlite")
+    conn, cursor = jobs.open_db(DATABASE)
     cursor.execute("SELECT * FROM jobs WHERE company = 'SkillValue'")
     assert cursor.fetchone() is not None
     jobs.close_db(conn)
 
 
 def test_table_exists():
-    conn, cursor = jobs.open_db("Git_Jobs.sqlite")
+    conn, cursor = jobs.open_db(DATABASE)
     cursor.execute("SELECT * FROM jobs")
     assert cursor.fetchone() is not None
     jobs.close_db(conn)
@@ -35,7 +37,7 @@ def test_good_data():
         "type": "test_type",
         "url": "test_url"
     }]
-    conn, cursor = jobs.open_db("Git_Jobs.sqlite")
+    conn, cursor = jobs.open_db(DATABASE)
     jobs.insert_jobs(cursor, job)
     cursor.execute("SELECT * FROM jobs WHERE company = 'test_company'")
     assert cursor.fetchone() is not None
@@ -57,7 +59,7 @@ def test_bad_data():
         "type": "test_type",
         "url": "test_url"
     }]
-    conn, cursor = jobs.open_db("Git_Jobs.sqlite")
+    conn, cursor = jobs.open_db(DATABASE)
     try:
         jobs.insert_jobs(cursor, job)
     except sqlite3.IntegrityError:
@@ -69,7 +71,7 @@ def test_bad_data():
 
 
 def test_null_primary_keys():
-    conn, cursor = jobs.open_db("Git_Jobs.sqlite")
+    conn, cursor = jobs.open_db(DATABASE)
     cursor.execute("SELECT * FROM jobs WHERE id = NULL")
     assert cursor.fetchone() is None
     jobs.close_db(conn)
