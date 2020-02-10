@@ -33,8 +33,8 @@ def create_table(cursor: sqlite3.Cursor):
 def insert_jobs(cursor: sqlite3.Cursor, job_responses):
     print(len(job_responses))
     for job in job_responses:
-        cursor.execute(f'''INSERT OR REPLACE INTO jobs (company, company_logo, company_url, 
-                        created_at, description, how_to_apply, id, location, title, type, url) 
+        cursor.execute(f'''INSERT OR REPLACE INTO jobs (company, company_logo, company_url,
+                        created_at, description, how_to_apply, id, location, title, type, url)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                        (job["company"],
                         job["company_logo"],
