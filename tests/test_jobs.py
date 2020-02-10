@@ -3,8 +3,8 @@ import os.path
 
 
 def test_api_length():
-    joblist = jobs.get_api()
-    assert len(joblist) > 100
+    job_list = jobs.get_api()
+    assert len(job_list) > 100
 
 
 def test_job_listing():
