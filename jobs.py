@@ -1,6 +1,7 @@
 import requests
 import sqlite3
 from typing import Tuple
+import feedparser
 
 
 def open_db(filename: str) -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
@@ -31,7 +32,6 @@ def create_table(cursor: sqlite3.Cursor):
 
 
 def insert_jobs(cursor: sqlite3.Cursor, job_responses):
-    print(len(job_responses))
     for job in job_responses:
         cursor.execute(f'''INSERT OR REPLACE INTO jobs (company, company_logo, company_url,
                         created_at, description, how_to_apply, id, location, title, type, url)
@@ -49,23 +49,40 @@ def insert_jobs(cursor: sqlite3.Cursor, job_responses):
                         job["url"]))
 
 
-def get_api():
+def get_github_api(link):
     job_responses = []
     length = 50
     i = 1
 
     while length != 0:
-        response = requests.get("https://jobs.github.com/positions.json?page=" + str(i))
-
-        print(response.status_code)
-
+        response = requests.get(link + str(i))
         if response.status_code == 200:
             i += 1
-
             for each in response.json():
                 job_responses.append(each)
-
             length = len(response.json())
+    return job_responses
+
+
+def get_stack_feed(feed):
+    job_responses = []
+    feed = feedparser.parse(feed)
+
+    for each in feed.entries:
+        convert_json = {
+            "company": each.author,
+            "company_logo": None,
+            "company_url": None,
+            "created_at": each.published,
+            "description": each.summary,
+            "how_to_apply": None,
+            "id": each.id,
+            "location": each.location if 'location' in each else None,
+            "title": each.title,
+            "type": None,
+            "url": each.link
+        }
+        job_responses.append(convert_json)
 
     return job_responses
 
@@ -73,8 +90,10 @@ def get_api():
 def main():
     conn, cursor = open_db("Git_Jobs.sqlite")
     print(type(conn))
+    cursor.execute("DROP TABLE jobs")
     create_table(cursor)
-    insert_jobs(cursor, get_api())
+    insert_jobs(cursor, get_github_api("https://jobs.github.com/positions.json?page="))
+    insert_jobs(cursor, get_stack_feed("https://stackoverflow.com/jobs/feed"))
     close_db(conn)
 
 

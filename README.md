@@ -1,12 +1,15 @@
 # cmcdermottJobProject
-Senior Design and Development - Sprint 2
+Senior Design and Development - Sprint 3
 
 ## Christian McDermott
+#### Features
 - This program takes from the GitHub Jobs API and stores them into a SQLite DB
-- Six tests are built into the project
-- The 1st test checks to see if at least 100 jobs are taken in from the API
-- The 2nd test checks the DB to make sure at least 1 known company is listed
-- The 3rd test checks to make sure the DB exists
-- The 4th and 5th tests give good and bad data to make sure the functions run properly
-- The 6th test makes sure there are no NULL primary keys in the DB
-- To run tests, use command 'python -m pytest'
+- It then grabs from Stack Overflow's jobs and parses the feed into the SQLite DB
+#### Tests
+######Nine tests are built into the project
+- Two tests check that data being taken in is not empty
+- One test makes sure the DB exists
+- One test checks that a specific company is in the DB
+- One test checks that no primary keys are null within the DB
+- Four tests run good and bad data from a pseudo-feed and a pseudo-API to make sure that bad data does not insert while good data does
+#####To run tests, use command 'python -m pytest'
