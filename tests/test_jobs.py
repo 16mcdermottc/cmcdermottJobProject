@@ -16,7 +16,7 @@ def test_stack_length():
 
 def test_job_listing():
     conn, cursor = jobs.open_db(DATABASE)
-    cursor.execute("SELECT * FROM jobs WHERE company = 'SkillValue'")
+    cursor.execute("SELECT * FROM jobs WHERE company = 'Salesforce'")
     check_data = cursor.fetchone()
     jobs.close_db(conn)
     assert check_data is not None
@@ -131,3 +131,51 @@ def test_null_primary_keys():
     check_data = cursor.fetchone()
     jobs.close_db(conn)
     assert check_data is None
+
+
+def test_job_tech():
+    conn, cursor = jobs.open_db(DATABASE)
+    job_objects = jobs.join_jobs_and_cache(cursor, jobs.create_job_object(cursor))
+    test_filter = "python"
+    tech_filter = jobs.filter_job_tech(job_objects, test_filter)
+    jobs.close_db(conn)
+    if len(tech_filter) > 0:
+        assert True
+    else:
+        assert False
+
+
+def test_company():
+    conn, cursor = jobs.open_db(DATABASE)
+    job_objects = jobs.join_jobs_and_cache(cursor, jobs.create_job_object(cursor))
+    test_filter = "Salesforce"
+    company_filter = jobs.filter_company(job_objects, test_filter)
+    jobs.close_db(conn)
+    if len(company_filter) > 0:
+        assert True
+    else:
+        assert False
+
+
+def test_job_type():
+    conn, cursor = jobs.open_db(DATABASE)
+    job_objects = jobs.join_jobs_and_cache(cursor, jobs.create_job_object(cursor))
+    test_filter = "full time"
+    job_type_filter = jobs.filter_job_type(job_objects, test_filter)
+    jobs.close_db(conn)
+    if len(job_type_filter) > 0:
+        assert True
+    else:
+        assert False
+
+
+def test_date():
+    conn, cursor = jobs.open_db(DATABASE)
+    job_objects = jobs.join_jobs_and_cache(cursor, jobs.create_job_object(cursor))
+    test_filter = jobs.dt(2019, 1, 1)
+    job_date_filter = jobs.filter_date(job_objects, test_filter)
+    jobs.close_db(conn)
+    if len(job_date_filter) > 0:
+        assert True
+    else:
+        assert False
