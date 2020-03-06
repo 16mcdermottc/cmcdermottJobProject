@@ -4,7 +4,6 @@ from datetime import date
 from datetime import datetime as dt
 from typing import Tuple
 
-import json
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -223,6 +222,18 @@ def filter_job_type(jobs_objects, job_type):
         return jobs_objects
 
 
+def check_data(job_objects, click_data):
+    if click_data is not None:
+        data = click_data["points"][0]
+        for job in job_objects:
+            if job["latitude"] is not None:
+                company_title = job["company"] + ": " + job["title"]
+                if data["lat"] == job["latitude"] and data["text"] == company_title:
+                    full_desc = company_title + "\n" + job["url"] + "\nPOSTED: " + job["created_at"] + \
+                                ", LOCATION: " + job["location"] + "\nDESCRIPTION: " + job["description"]
+                    return full_desc
+
+
 def use_map(job_objects):
     mapbox_access_token = "pk.eyJ1IjoiZGFudGVkaWNsZW1lbnRlIiwiYSI6ImNrNzB6dHE1cjAxeGczZ25zcWo1YW9mZWoifQ.AJDlCC171CRF1xDT9rEd0A"
 
@@ -265,7 +276,7 @@ def create_app_window(fig, job_objects):
     app.layout = html.Div(children=[
 
         dcc.Graph(figure=fig, id='graph-component', style={
-            'height': '90vh'
+            'height': '75vh'
         }),
         dcc.Interval(
             id='interval-component',
@@ -326,18 +337,16 @@ def create_app_window(fig, job_objects):
             html.Pre(
                 id='click-data',
                 style={
-                    'width': '100vw',
-                    'max-width': '100vw',
+                    'width': '95vw',
+                    'max-width': '95vw',
+                    'height': '10vh',
                     'word-wrap': 'normal',
                     'color': 'black',
                     'border': '2px solid black'
                 }
             ),
         ])
-    ],
-        style={
-            'max-width': '100vw'
-        })
+    ])
 
     @app.callback(
         Output('graph-component', 'figure'),
@@ -358,15 +367,7 @@ def create_app_window(fig, job_objects):
         Output('click-data', 'children'),
         [Input('graph-component', 'clickData')])
     def display_click_data(click_data):
-        if click_data is not None:
-            data = click_data["points"][0]
-            for job in job_objects:
-                if job["latitude"] is not None:
-                    company_title = job["company"] + ": " + job["title"]
-                    if data["lat"] == job["latitude"] and data["text"] == company_title:
-                        full_desc = company_title + "\n" + job["url"] + "\nPOSTED: " + job["created_at"] + \
-                                    ", LOCATION: " + job["location"] + "\nDESCRIPTION: " + job["description"]
-                        return full_desc
+        return check_data(job_objects, click_data)
 
     return app
 
