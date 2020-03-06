@@ -235,7 +235,7 @@ def check_data(job_objects, click_data):
 
 
 def use_map(job_objects):
-    mapbox_access_token = "pk.eyJ1IjoiZGFudGVkaWNsZW1lbnRlIiwiYSI6ImNrNzB6dHE1cjAxeGczZ25zcWo1YW9mZWoifQ.AJDlCC171CRF1xDT9rEd0A"
+    token = "pk.eyJ1IjoiZGFudGVkaWNsZW1lbnRlIiwiYSI6ImNrNzB6dHE1cjAxeGczZ25zcWo1YW9mZWoifQ.AJDlCC171CRF1xDT9rEd0A"
 
     comp = []
     lat = []
@@ -261,7 +261,7 @@ def use_map(job_objects):
     fig.update_layout(
         title='Jobs from Stack Overflow and GitHub',
         mapbox=dict(
-            accesstoken=mapbox_access_token,
+            accesstoken=token,
         )
     )
 
