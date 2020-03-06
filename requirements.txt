@@ -1,1 +1,6 @@
+feedparser
+geopy
+plotly
+dateutil
+dash
 requests

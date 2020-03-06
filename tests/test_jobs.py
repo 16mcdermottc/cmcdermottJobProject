@@ -172,10 +172,30 @@ def test_job_type():
 def test_date():
     conn, cursor = jobs.open_db(DATABASE)
     job_objects = jobs.join_jobs_and_cache(cursor, jobs.create_job_object(cursor))
-    test_filter = jobs.dt(2019, 1, 1)
+    test_filter = "2020-01-01"
     job_date_filter = jobs.filter_date(job_objects, test_filter)
     jobs.close_db(conn)
     if len(job_date_filter) > 0:
         assert True
     else:
         assert False
+
+
+def test_check_data():
+    conn, cursor = jobs.open_db(DATABASE)
+    job_objects = jobs.join_jobs_and_cache(cursor, jobs.create_job_object(cursor))
+    data = {
+        "points": [
+            {
+                "curveNumber": 0,
+                "pointNumber": 3,
+                "pointIndex": 3,
+                "lon": "-71.0582912",
+                "lat": "42.3602534",
+                "text": "Salesforce: DevOps Engineers All Levels (Senior/Lead/Principal) (Multiple Locations) at Salesforce (Boston, MA)"
+            }
+        ]
+    }
+    jobs.close_db(conn)
+    check = jobs.check_data(job_objects, data)
+    assert check is not None
