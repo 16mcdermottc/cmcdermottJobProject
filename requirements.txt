@@ -1,6 +1,6 @@
 feedparser
 geopy
 plotly
-dateutil
+python-dateutil
 dash
 requests
