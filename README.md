@@ -7,7 +7,7 @@ Senior Design and Development - Sprint 3
 - It then grabs from Stack Overflow's jobs and parses the feed into the SQLite DB
 - This DB is then taken and displayed onto a map, where filters can be applied and details can be seen
 #### Tests
-######Fourteen tests are built into the project
+#####Fourteen tests are built into the project
 - Two tests check that data being taken in is not empty
 - One test makes sure the DB exists
 - One test checks that a specific company is in the DB
