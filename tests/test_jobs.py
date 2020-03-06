@@ -192,7 +192,8 @@ def test_check_data():
                 "pointIndex": 3,
                 "lon": "-71.0582912",
                 "lat": "42.3602534",
-                "text": "Salesforce: DevOps Engineers All Levels (Senior/Lead/Principal) (Multiple Locations) at Salesforce (Boston, MA)"
+                "text": "Salesforce: DevOps Engineers All Levels "
+                        "(Senior/Lead/Principal) (Multiple Locations) at Salesforce (Boston, MA)"
             }
         ]
     }
